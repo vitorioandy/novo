@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 menu = """
 ================ Menu ================
@@ -16,8 +16,9 @@ menu = """
 saldo = 0
 limite = 500
 extrato = ""
-numero_saque = 0
-LIMITE_SAQUE = 3
+NUMERO_TRANSACAO = 0
+
+
 
 while True:
     op= input(menu)
@@ -29,22 +30,20 @@ while True:
         if valor > 0:
                 
             saldo += valor
-            extrato += f"deposito: R$ {valor:.2f}\n"+ f"{datetime.now()}\n"
+            extrato += f"\nData da transaçaõ : {datetime.today().strftime('%d/%m/%Y %H:%M:%S')}\n" + f"\n Valor do Deposito : R$ {valor:.2f}\n" + f"~"*25
+            NUMERO_TRANSACAO += 1
+            if NUMERO_TRANSACAO >= 10:
+                print("Numero limite de Transações diarias alcançado. ")
 
         else: print ('Operação falha, informe o valor corretamente.')        
 
     elif op == "s":
         valor = float(input('defina o valor do saque: '))
 
-        exc_saq = numero_saque >= LIMITE_SAQUE
-
         exc_saldo = valor > saldo
 
         exc_limite = valor > limite   
-        if exc_saq: 
-            print ("Você excedeu o seu limite de saques por hoje ")
-
-        elif exc_saldo:
+        if exc_saldo:
             print('Saldo insuficiente, operação cancelada')
 
         elif exc_limite:
@@ -53,9 +52,12 @@ while True:
         elif valor > 0:
             saldo -= valor
 
-            extrato += f"Saque: R$ {valor:.2f}\n"
+            extrato += f"\nData da transação : {datetime.today().strftime('%d/%m/%Y %H:%M:%S')}\n" + f"\n Valor do Saque : R$ {valor:.2f}\n" + f"~"*25
 
-            numero_saque += 1
+            NUMERO_TRANSACAO += 1
+            if NUMERO_TRANSACAO >= 10:
+                print("Numero limite de Transações diarias alcançado. ")
+
 
         else :
             print ("operação falha, o valor informado é invalido")
@@ -65,18 +67,18 @@ while True:
 
         print ("Não houveram movimentações" if not extrato else extrato)
 
-        print ("===========================")
+        print ("="*25)
 
         print (f"\nSaldo: R$ {saldo:.2f}")
 
-        print (datetime.now() , "\n")    
+        print (datetime.today().strftime('%d/%m/%Y %H:%M:%S'),"\n")  
 
-        print ("============================")
+        print ("="*25)
 
 
-    elif op == "q":
+    else:  print ("operação invalida, selecione uma opção do menu")
+    
+    if op == "q":
         break
-
-else:
-    print ("operação invalida, selecione uma opção do menu")
+   
 
